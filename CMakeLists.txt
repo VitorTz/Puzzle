@@ -27,7 +27,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(raylib)
 
 # Add source to this project's executable.
-add_executable (Puzzle "Puzzle.cpp" "Puzzle.h" "src/scene/Scene.h" "src/scene/SceneID.h" "src/scene/ChooseImageScene.cpp" "src/scene/PuzzleScene.cpp" "src/scene/Scene.cpp" "src/constants.h" "src/components/Component.h" "src/components/Component.cpp" "src/components/Image.cpp" "src/components/Border.cpp" "src/components/Grid.cpp" "src/util/util.h")
+add_executable (Puzzle "Puzzle.cpp" "Puzzle.h" "src/scene/Scene.h" "src/scene/SceneID.h" "src/scene/ChooseImageScene.cpp" "src/scene/PuzzleScene.cpp" "src/scene/Scene.cpp" "src/constants.h" "src/components/Component.h" "src/components/Component.cpp" "src/components/Image.cpp" "src/components/Border.cpp" "src/components/Grid.cpp" "src/util/util.h" "src/util/globals.h" "src/util/TexturePool.h" "src/util/TexturePool.cpp" "src/util/util.cpp" "src/components/ImageButton.cpp" )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Puzzle PROPERTY CXX_STANDARD 20)

@@ -1,8 +1,6 @@
 #include "Component.h"
 
 
-pz::Component::Component(std::string name_) : name(std::move(name_)) { }
-
 
 Vector2 pz::Component::get_center() const {
 	const Vector2 c{
@@ -92,7 +90,7 @@ Rectangle pz::Component::get_rect() const {
 
 pz::Component* pz::Component::add_component(std::unique_ptr<pz::Component> c) {
 	this->children.emplace_back(std::move(c));
-	return this->children.back().get();
+	return this->children.back().get();	
 }
 
 
@@ -113,23 +111,26 @@ float pz::Component::get_scale() const {
 
 void pz::Component::set_scale(const float scale) {
 	this->scale = scale;
+	for (std::unique_ptr<pz::Component>& c : this->children)
+		c->set_scale(scale);
 }
 
 
 void pz::Component::update(const float dt) {
-	for (std::unique_ptr<pz::Component>& c : this->children) {
+	for (std::unique_ptr<pz::Component>& c : this->children)
 		c->update(dt);
-	}
 }
 
 
 void pz::Component::draw() {
-	for (std::unique_ptr<pz::Component>& c : this->children) {
+	for (std::unique_ptr<pz::Component>& c : this->children)
 		c->draw();
-	}
 }
 
 
-const std::string& pz::Component::get_name() const {
-	return this->name;
+bool pz::Component::is_hovered() const {	
+	return CheckCollisionPointRec(
+		GetMousePosition(),
+		this->get_rect()
+	);
 }

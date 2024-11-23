@@ -1,13 +1,11 @@
 #include "Component.h"
 
 
-pz::Border::Border() : pz::Border(1.0f, WHITE) { }
 
 pz::Border::Border(
 	const float thickness,
 	const Color color
-) : pz::Component("Border"),
-	thickness(thickness),
+) : thickness(thickness),
 	color(color) {
 
 }

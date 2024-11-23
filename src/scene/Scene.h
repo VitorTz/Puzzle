@@ -1,7 +1,9 @@
 #pragma once
+#include <vector>
 #include "SceneID.h"
 #include "../constants.h"
 #include "../components/Component.h"
+#include "../util/globals.h"
 
 
 namespace pz {
@@ -21,6 +23,17 @@ namespace pz {
 	};
 
 	class PuzzleScene : public pz::Scene {
+
+	private:
+		Texture2D image{};
+		pz::ImageButton return_button;
+		pz::ImageButton reset_button;
+		pz::ImageButton preview_button;
+		std::vector<std::pair<bool, Rectangle>> puzzle_grid{};
+
+	private:
+		void reset_puzzle();
+
 	public:
 		PuzzleScene();
 		void update(float dt) override;

@@ -1,23 +1,20 @@
 #pragma once
+#include <unordered_map>
 #include <raylib.h>
 #include <vector>
 #include <memory>
 #include <string>
 
-
 namespace pz {
 
 	class Component {
 
-	protected:
-		std::string name{};
+	protected:		
 		Rectangle rect{};
 		float scale{ 1.0f };
 		std::vector<std::unique_ptr<pz::Component>> children{};		
 
-	public:
-		Component() = default;
-		Component(std::string name);
+	public:				
 		virtual ~Component() = default;
 		
 		virtual Vector2 get_center() const;
@@ -43,15 +40,15 @@ namespace pz {
 
 		virtual float width() const;
 		virtual float height() const;
+		
+		virtual bool is_hovered() const;
 
 		virtual Rectangle get_rect() const;		
 
 		float get_scale() const;
 		void set_scale(float scale);
 
-		virtual pz::Component* add_component(std::unique_ptr<pz::Component> c);
-
-		const std::string& get_name() const;
+		virtual pz::Component* add_component(std::unique_ptr<pz::Component> c);		
 
 		virtual void update(float dt);
 		virtual void draw();
@@ -60,11 +57,11 @@ namespace pz {
 	class Border : public pz::Component {
 
 	private:
-		float thickness{};
-		Color color{};
+		float thickness{1.0f};
+		Color color{WHITE};
 
 	public:
-		Border();
+		Border() = default;
 		Border(float thickness, Color color);
 		Border(float thickness, Color color, Rectangle rect);
 		float get_thickness() const;
@@ -76,14 +73,38 @@ namespace pz {
 
 	};
 
-	class Image : public pz::Component {
+	class ImageComponent : public pz::Component {
 	private:
-		Texture2D texture{};		
+		Texture2D texture{};
+		std::string imagepath{};
 
 	public:
-		explicit Image(const char* filepath);
-		~Image() override;
+		ImageComponent() = default;
+		explicit ImageComponent(const char* filepath);
+		const std::string& get_imagepath() const;
+		const Texture& get_texture() const;
+		void change_image(const char* filepath);
 		void draw() override;
+	};
+
+	class ImageButton : public pz::Component {	
+
+	private:		
+		pz::ImageComponent* image;
+		pz::ImageComponent* hover_image;
+		void (*action)();
+
+	public:
+		ImageButton(
+			const char* image,
+			const char* hover_image,
+			const float pos_x,
+			const float pos_y,
+			void (*action)()
+		);
+		void update(float dt) override;
+		void draw() override;
+
 	};
 
 
@@ -109,7 +130,7 @@ namespace pz {
 			float padding_y			
 		);
 		pz::Component* add_component(std::unique_ptr<pz::Component> c) override;
-		const pz::Component* get_hovered_component() const;
+		pz::Component* get_hovered_component();
 		void update(float dt) override;
 		void move_horizontal(float delta);
 		void move_vertical(float delta);

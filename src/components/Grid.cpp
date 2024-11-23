@@ -11,8 +11,8 @@ pz::Grid::Grid(
 ) : columns(columns),
 	padding_x(padding_x), 
 	padding_y(padding_y),
-    max_width(pz::SCREEN_W / columns),
-    max_pos_x(pz::SCREEN_W - padding_x),
+	max_width(static_cast<float>(pz::SCREEN_W / columns)),
+	max_pos_x(static_cast<float>(pz::SCREEN_W) - padding_x),
 	last_component_rect({pos_x, pos_y, -padding_x, 0.0f}) {
 	this->rect.x = pos_x;
 	this->rect.y = pos_y;	
@@ -27,15 +27,22 @@ pz::Component* pz::Grid::add_component(std::unique_ptr<pz::Component> c) {
 
 	const std::size_t num_childrens = this->children.size();
 	const int col = num_childrens % this->columns;
+	float x, y;
 
-	if (col == 0 && num_childrens >= this->columns) {
-		c->set_left(this->rect.x);
-		c->set_top(this->children[num_childrens - this->columns]->get_bottom() + this->padding_y);
+	if (num_childrens == 0) {
+		x = this->rect.x;
+		y = this->rect.y;		
+	} else if (num_childrens >= this->columns) {
+		x = col == 0 ? x = this->rect.x : this->children.back()->get_right() + this->padding_x;		
+		y = this->children[num_childrens - this->columns]->get_bottom() + padding_y;		
 	} else {
-		c->set_top(this->last_component_rect.y);
-		c->set_left(this->last_component_rect.x + this->last_component_rect.width + this->padding_x);
+		x = this->children.back()->get_right() + padding_x;
+		y = this->children.back()->get_top();
 	}
 
+	c->set_left(x);
+	c->set_top(y);
+	
 	if (c->get_right() > this->max_pos_x) {
 		const float scale = c->get_scale();
 		c->set_scale(scale * (this->max_pos_x - c->get_left()) / c->width());
@@ -94,6 +101,6 @@ void pz::Grid::clear() {
 }
 
 
-const pz::Component* pz::Grid::get_hovered_component() const {
+pz::Component* pz::Grid::get_hovered_component() {
 	return this->hovered_component;
 }

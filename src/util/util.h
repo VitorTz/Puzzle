@@ -3,3 +3,8 @@
 #include <vector>
 
 
+namespace pz {
+
+	std::size_t hash_str(const char* s);
+
+}
