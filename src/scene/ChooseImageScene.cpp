@@ -31,7 +31,7 @@ pz::ChooseImageScene::ChooseImageScene() {
 void pz::ChooseImageScene::update(const float dt) {
 	const float mouse_delta = GetMouseWheelMove();
 	if (mouse_delta != 0.0f) {
-		const float mov = mouse_delta * dt * 350.0f;
+		const float mov = mouse_delta * dt * pz::SCROLL_SPEED;
 		y_pos += mov;
 		grid.move_vertical(mov);
 	}

@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include "../constants.h"
+
 
 namespace pz {
 
@@ -107,7 +109,6 @@ namespace pz {
 
 	};
 
-
 	class Grid : public pz::Component {
 
 	private:
@@ -137,6 +138,39 @@ namespace pz {
 		void move(float delta_horizontal, float delta_vertical);
 		void draw() override;
 		void clear();
+
+	};
+
+	class PuzzleGrid : public pz::Component {
+
+	private:
+		Texture2D image{};
+		int rows{};
+		int cols{};
+		int src_rect_index;
+		int dst_rect_index;
+		bool should_move_rect{};
+		Vector2 src_pos{};
+		Vector2 current_pos{};
+		Vector2 dst_pos{};
+		float time{};
+		std::vector<std::pair<bool, Rectangle>> grid{};
+
+	private:
+		void handle_input();
+		void move_rect(float dt);
+
+	public:
+		explicit PuzzleGrid(
+			const char* puzzle_image,
+			const float puzzle_image_max_width,
+			const float puzzle_image_max_height
+		);
+		~PuzzleGrid() override;
+		void reset();
+		void update(float dt) override;
+		void draw_preview() const;
+		void draw() override;
 
 	};
 

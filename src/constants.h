@@ -16,5 +16,9 @@ namespace pz {
 	
 	constexpr Color BACKGROUND_COLOR{ 18, 18, 18 };
 	constexpr pz::SceneID MAIN_SCENE{ pz::ChooseImageSceneID };
+	constexpr int PUZZLE_RECT_SIZE{ 80 };
+	constexpr float TIME_TO_MOVE_A_PUZZLE_RECT{ 0.20f };
+	
+	constexpr float SCROLL_SPEED{ 740.0f };
 
 }
